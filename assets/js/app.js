@@ -53,9 +53,8 @@ console.log(healthData);
 
     // Step 5: Create Circles
     // ==============================
-    var circlesGroup = chartGroup.selectAll("circle")
-    .data(healthData)
-    .enter()
+    var circlesGroup = chartGroup.selectAll("circle").data(healthData).enter()
+    circlesGroup
     .append("circle")
     .attr("cx", d => xLinearScale(d.poverty))
     .attr("cy", d => yLinearScale(d.healthcare))
@@ -63,11 +62,29 @@ console.log(healthData);
     .attr("class", "stateCircle")
     .attr("opacity", ".75");
 
+    circlesGroup.append("text")
+    //We return the abbreviation to .text, which makes the text the abbreviation.
+    .text(function (d) {
+        return d.abbr.slice(0,2);
+    })
+    //Now place the text using our scale.
+    .attr("dx", function (d) {
+        return xLinearScale(d['poverty']) - 1;
+    })
+    .attr("dy", function (d) {
+        // When the size of the text is the radius,
+        // adding a third of the radius to the height
+        // pushes it into the middle of the circle.
+        return yLinearScale(d['healthcare']) + 1 / 2.5;
+    })
+    .attr("font-size", 15)
+    .attr("class", "stateText");
+
     // Step 6: Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
       .attr("class", "tooltip")
-      .offset([80, -60])
+      .offset([10, -10])
       .html(function(d) {
         return (`${d.abbr}`);
       });
@@ -78,13 +95,13 @@ console.log(healthData);
 
     // Step 8: Create event listeners to display and hide the tooltip
     // ==============================
-    circlesGroup.on("click", function(data) {
-      toolTip.show(data, this);
-    })
-      // onmouseout event
-      .on("mouseout", function(data, index) {
-        toolTip.hide(data);
-      });
+    // circlesGroup.on("click", function(data) {
+    //   toolTip.show(data, this);
+    // })
+    //   // onmouseout event
+    //   .on("mouseout", function(data, index) {
+    //     toolTip.hide(data);
+    //   });
 
     // Create axes labels
     chartGroup.append("text")
