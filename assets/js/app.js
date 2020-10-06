@@ -110,12 +110,12 @@ console.log(healthData);
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("class", "aText")
-      .text("Rate of Healthcare (%)");
+      .text("Population Without Healthcare (%)");
 
     chartGroup.append("text")
       .attr("transform", `translate(${width / 2}, ${height + 35})`)
       .attr("class", "aText")
-      .text("Rate of Poverty (%)");
+      .text("Population in Poverty (%)");
   }).catch(function(error) {
     console.log(error);
   });
